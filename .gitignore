@@ -160,4 +160,5 @@ build
 .vscode/*
 debug
 
-vendor/*
+vendor/*tmp/
+/tmp/

@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/millerp/ipe/utils"
 	log "github.com/golang/glog"
+	"github.com/millerp/ipe/utils"
 )
 
 // A Channel

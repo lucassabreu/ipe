@@ -12,8 +12,8 @@ import (
 	"time"
 
 	log "github.com/golang/glog"
-	"github.com/pressly/chi"
-	"github.com/pressly/chi/middleware"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 // Start Parse the configuration file and starts the ipe server

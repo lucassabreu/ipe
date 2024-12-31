@@ -1,0 +1,31 @@
+volumes:
+  redis-data:
+    driver: local
+
+services:
+  proxy:
+    image: caddy:2.8
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 3080:3080
+    volumes:
+      - ./devops/caddy:/etc/caddy
+  server1: &server
+    build:
+      context: .
+      dockerfile: ./devops/Dockerfile
+      target: dev
+    volumes:
+      - .:/app
+    environment:
+      ADDR: ":8080"
+      REDIS_DSN: "redis://redis"
+  server2:
+    <<: *server
+  redis:
+    image: redis:6-alpine
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"

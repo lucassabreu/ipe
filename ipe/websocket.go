@@ -14,7 +14,7 @@ import (
 
 	log "github.com/golang/glog"
 	"github.com/gorilla/websocket"
-	"github.com/pressly/chi"
+	"github.com/go-chi/chi"
 
 	"github.com/millerp/ipe/utils"
 )

@@ -28,7 +28,7 @@ func Test_db_GetAppByAppID(t *testing.T) {
 	a, err := db.GetAppByAppID("123456")
 
 	if err != nil {
-		t.Errorf("GetAppByAppID(%q) == %q, want %q", "123456", a, app)
+		t.Errorf("GetAppByAppID(%q) == %v, want %v", "123456", a, app)
 	}
 }
 
@@ -41,7 +41,7 @@ func Test_db_GetAppByAppID__error(t *testing.T) {
 	a, err := db.GetAppByAppID("not-found")
 
 	if err == nil {
-		t.Errorf("GetAppByAppID(%q) == %q, want %q", "123456", a, app)
+		t.Errorf("GetAppByAppID(%q) == %v, want %v", "123456", a, app)
 	}
 }
 
@@ -54,7 +54,7 @@ func Test_db_GetAppByKey(t *testing.T) {
 	a, err := db.GetAppByKey("654321")
 
 	if err != nil {
-		t.Errorf("GetAppByKey(%q) == %q, want %q", "654321", a, app)
+		t.Errorf("GetAppByKey(%q) == %v, want %v", "654321", a, app)
 	}
 }
 
@@ -67,6 +67,6 @@ func Test_db_GetAppByKey__error(t *testing.T) {
 	a, err := db.GetAppByKey("not-found")
 
 	if err == nil {
-		t.Errorf("GetAppByKey(%q) == %q, want %v", "not-found", a, nil)
+		t.Errorf("GetAppByKey(%q) == %v, want %v", "not-found", a, nil)
 	}
 }

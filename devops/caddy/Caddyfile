@@ -1,0 +1,12 @@
+http://localhost:3080 {
+    root /var/www/html
+    @ws {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    reverse_proxy server1:8080 server2:8080 {
+        lb_policy cookie wb_cookie {
+            fallback least_conn
+        }
+    }
+}
