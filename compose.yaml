@@ -18,8 +18,6 @@ services:
       target: dev
     volumes:
       - .:/app
-    environment:
-      REDIS_DSN: "redis://redis"
   server2:
     <<: *server
   redis:
