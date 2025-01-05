@@ -5,6 +5,8 @@
   "SSLHost": ":4433",
   "SSLKeyFile": "A key.pem file",
   "SSLCertFile": "A cert.pem file",
+  "BusDsn": "redis://redis",
+  "BusChannel": "pusher-messages",
   "Apps": [
     {
       "ApplicationDisabled": false,

@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	log "github.com/golang/glog"
+	"github.com/millerp/ipe/ipe/bus"
 )
 
 // An App
@@ -31,10 +32,16 @@ type app struct {
 	Connections map[string]*connection
 
 	Stats *expvar.Map
+
+	Bus bus.Bus
 }
 
-func newApp(name, appID, key, secret string, onlySSL, disabled, userEvents, webHooks bool, webHookURL string) *app {
-
+func newApp(
+	name, appID, key, secret string,
+	onlySSL, disabled, userEvents,
+	webHooks bool, webHookURL string,
+	bus bus.Bus,
+) *app {
 	a := &app{
 		Name:                name,
 		AppID:               appID,
@@ -45,6 +52,7 @@ func newApp(name, appID, key, secret string, onlySSL, disabled, userEvents, webH
 		UserEvents:          userEvents,
 		WebHooks:            webHooks,
 		URLWebHook:          webHookURL,
+		Bus:                 bus,
 	}
 
 	a.Connections = make(map[string]*connection)
@@ -226,7 +234,38 @@ func (a *app) FindChannelByChannelID(n string) (*channel, error) {
 func (a *app) Publish(c *channel, event rawEvent, ignore string) error {
 	a.Stats.Add("TotalUniqueMessages", 1)
 
-	return c.Publish(a, event, ignore)
+	return a.Bus.Publish(bus.Message{
+		AppID:    a.AppID,
+		Event:    event.Event,
+		Data:     event.Data,
+		Channel:  c.ChannelID,
+		SocketID: ignore,
+	})
+}
+
+func (a *app) Consume() error {
+	c, err := a.Bus.Channel(a.AppID)
+	if err != nil {
+		log.Error(err)
+		return err
+	}
+
+	defer close(c)
+	for m := range c {
+		go a.FindOrCreateChannelByChannelID(m.Channel).
+			Publish(
+				a,
+				rawEvent{
+					Event:   m.Event,
+					Channel: m.Channel,
+					Data:    m.Data,
+				},
+				m.SocketID,
+			)
+
+	}
+
+	return nil
 }
 
 func (a *app) Unsubscribe(c *channel, conn *connection) error {

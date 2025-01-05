@@ -4,6 +4,8 @@
 
 package ipe
 
+import "github.com/millerp/ipe/ipe/bus"
+
 // The config file
 type configFile struct {
 	Host        string // The host, eg: :8080 will start on 0.0.0.0:8080
@@ -13,6 +15,8 @@ type configFile struct {
 	SSLHost     string
 	SSLKeyFile  string
 	SSLCertFile string
+	BusDsn      string
+	BusChannel  string
 
 	Apps []configApp
 }
@@ -29,7 +33,7 @@ type configApp struct {
 	URLWebHook          string
 }
 
-func newAppFromConfig(a configApp) *app {
+func newAppFromConfig(a configApp, bus bus.Bus) *app {
 	return newApp(
 		a.Name,
 		a.AppID,
@@ -40,5 +44,6 @@ func newAppFromConfig(a configApp) *app {
 		a.UserEvents,
 		a.WebHooks,
 		a.URLWebHook,
+		bus,
 	)
 }

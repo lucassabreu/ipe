@@ -7,13 +7,15 @@ package ipe
 import (
 	"strconv"
 	"testing"
+
+	"github.com/millerp/ipe/ipe/bus"
 )
 
 var id = 0
 
 func newTestApp() *app {
-
-	a := newApp("Test", strconv.Itoa(id), "123", "123", false, false, true, false, "")
+	var b bus.Bus
+	a := newApp("Test", strconv.Itoa(id), "123", "123", false, false, true, false, "", b)
 	id++
 
 	return a

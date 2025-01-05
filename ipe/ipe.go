@@ -5,15 +5,17 @@
 package ipe
 
 import (
+	"context"
 	"encoding/json"
 	"math/rand"
 	"net/http"
 	"os"
 	"time"
 
-	log "github.com/golang/glog"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	log "github.com/golang/glog"
+	"github.com/millerp/ipe/ipe/bus"
 )
 
 // Start Parse the configuration file and starts the ipe server
@@ -37,12 +39,21 @@ func Start(filename string) {
 		return
 	}
 
+	var rBus bus.Bus
+	if rBus, err = bus.NewRedisBus(context.Background(), conf.BusDsn, conf.BusChannel); err != nil {
+		log.Error(err)
+		return
+	}
+	defer rBus.Close()
+
 	// Using a in memory database
 	db := newMemdb()
 
 	// Adding applications
 	for _, a := range conf.Apps {
-		db.AddApp(newAppFromConfig(a))
+		app := newAppFromConfig(a, rBus)
+		db.AddApp(app)
+		go app.Consume()
 	}
 
 	r := chi.NewRouter()
