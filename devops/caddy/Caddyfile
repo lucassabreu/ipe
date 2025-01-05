@@ -1,6 +1,9 @@
 http://localhost:3080 {
     root /var/www/html
-    reverse_proxy server1:8080 server2:8080 {
+    log {
+        level INFO
+    }
+    reverse_proxy server1:3080 server2:3080 {
         lb_policy least_conn
     }
 }

@@ -19,7 +19,6 @@ services:
     volumes:
       - .:/app
     environment:
-      ADDR: ":8080"
       REDIS_DSN: "redis://redis"
   server2:
     <<: *server
