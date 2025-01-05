@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Triggers</title>
+  </head>
+  <body>
+    <script src="//js.pusher.com/3.2/pusher.min.js"></script>
+
+    <script>
+      var APP_KEY = "278d525bdf162c739803";
+      var HOST = "localhost";
+      var PORT = 3080;
+      var AUTH = "http://localhost:5000/pusher/private/auth";
+      var AUTH_PRESENCE = "http://localhost:5000/pusher/presence/auth";
+
+      function getPusher(auth) {
+        return new Pusher(APP_KEY, {
+          wsHost: HOST,
+          wsPort: PORT,
+          authEndpoint: auth,
+          enabledTransports: ["ws"],
+          disabledTransports: ["flash"],
+          cluster: "hello", // Should be ignored
+        });
+      }
+
+      pusher = getPusher(AUTH);
+      ch = pusher.subscribe("custom");
+      ch.bind("custom", console.log);
+    </script>
+  </body>
+</html>
