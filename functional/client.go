@@ -16,7 +16,7 @@ func init() {
 		AppID:  "1",
 		Key:    "278d525bdf162c739803",
 		Secret: "7ad3753142a6693b25b9",
-		Host:   ":8080",
+		Host:   ":3080",
 	}
 }
 
