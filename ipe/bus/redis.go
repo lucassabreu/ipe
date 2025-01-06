@@ -39,6 +39,7 @@ func NewRedisBus(
 }
 
 func (b *rbus) Close() {
+	b.redis.Close()
 	for _, ch := range b.chs {
 		close(ch)
 	}
