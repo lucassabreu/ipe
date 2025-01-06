@@ -61,6 +61,8 @@ $ go install github.com/dimiro1/ipe
 	"SSLHost": ":4433",                 // Required if SSL is true
 	"SSLKeyFile": "A key.pem file",     // Required if SSL is true
 	"SSLCertFile": "A cert.pem file",   // Required if SSL is true
+	"BusDsn": "redis://redis"           // Required
+	"BusChannel": "pusher-messages"     // Required
 	"Apps": [                           // Required, A Json arrays with multiple apps
 		{
 			"ApplicationDisabled": false,               // Required but can be false
